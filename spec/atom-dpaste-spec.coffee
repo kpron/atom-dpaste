@@ -12,51 +12,13 @@ describe "AtomDpaste", ->
     workspaceElement = atom.views.getView(atom.workspace)
     activationPromise = atom.packages.activatePackage('atom-dpaste')
 
-  describe "when the atom-dpaste:toggle event is triggered", ->
-    it "hides and shows the modal panel", ->
-      # Before the activation event the view is not on the DOM, and no panel
-      # has been created
-      expect(workspaceElement.querySelector('.atom-dpaste')).not.toExist()
-
-      # This is an activation event, triggering it will cause the package to be
-      # activated.
-      atom.commands.dispatch workspaceElement, 'atom-dpaste:toggle'
-
-      waitsForPromise ->
-        activationPromise
+  describe "when the atom-dpaste:upload event is triggered", ->
+    it "can read config of atom-dpaste", ->
 
       runs ->
-        expect(workspaceElement.querySelector('.atom-dpaste')).toExist()
-
-        atomDpasteElement = workspaceElement.querySelector('.atom-dpaste')
-        expect(atomDpasteElement).toExist()
-
-        atomDpastePanel = atom.workspace.panelForItem(atomDpasteElement)
-        expect(atomDpastePanel.isVisible()).toBe true
-        atom.commands.dispatch workspaceElement, 'atom-dpaste:toggle'
-        expect(atomDpastePanel.isVisible()).toBe false
-
-    it "hides and shows the view", ->
-      # This test shows you an integration test testing at the view level.
-
-      # Attaching the workspaceElement to the DOM is required to allow the
-      # `toBeVisible()` matchers to work. Anything testing visibility or focus
-      # requires that the workspaceElement is on the DOM. Tests that attach the
-      # workspaceElement to the DOM are generally slower than those off DOM.
-      jasmine.attachToDOM(workspaceElement)
-
-      expect(workspaceElement.querySelector('.atom-dpaste')).not.toExist()
-
-      # This is an activation event, triggering it causes the package to be
-      # activated.
-      atom.commands.dispatch workspaceElement, 'atom-dpaste:toggle'
-
-      waitsForPromise ->
-        activationPromise
-
-      runs ->
-        # Now we can test for view visibility
-        atomDpasteElement = workspaceElement.querySelector('.atom-dpaste')
-        expect(atomDpasteElement).toBeVisible()
-        atom.commands.dispatch workspaceElement, 'atom-dpaste:toggle'
-        expect(atomDpasteElement).not.toBeVisible()
+        config = atom.config.get('atom-dpaste')
+        expect(config.copy_paste_to_clipboard).toBe true
+        expect(config.open_paste_in_browser).toBe false
+        expect(config.api_url).toBe "dpaste.de"
+        expect(config.api_path).toBe "/api/"
+        expect(config.use_https).toBe true

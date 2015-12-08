@@ -11,3 +11,7 @@
 * Hotkey changed to "Ctrl+cmd(win)+c"
 * "Open in browser" option added
 * Context menu button rename
+## 0.1.3 - CI
+* Added basic travis-ci integration
+* Some changes in README
+* Added simple specs for travis-ci
