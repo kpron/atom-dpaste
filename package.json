@@ -2,7 +2,7 @@
   "name": "atom-dpaste",
   "author": "Cyril Prokhorenko <cy@kpron.org>",
   "main": "./lib/atom-dpaste",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Package for pasting code from atom to dpaste application.",
   "keywords": [
     "dpaste"
