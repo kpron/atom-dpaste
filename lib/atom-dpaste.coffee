@@ -1,6 +1,8 @@
 {CompositeDisposable} = require 'atom'
 http = require 'http'
+https = require 'https'
 settings = require './atom-dpaste-settings'
+shell = require 'shell'
 path = require 'path'
 
 module.exports = AtomDpaste =
@@ -18,14 +20,19 @@ module.exports = AtomDpaste =
   get_editor_data: ->
     editor = atom.workspace.getActivePane().getActiveEditor()
     selection = editor.getLastSelection()
-    if path.extname(editor.getPath()) == ".coffee"
+    extname = path.extname(editor.getPath())
+    if extname == ".coffee" or extname == ".js"
       syntax = "js"
-    else if path.extname(editor.getPath()) == ".pp"
+    else if extname == ".pp"
       syntax = "puppet"
-    else if path.extname(editor.getPath()) == ".py"
+    else if extname == ".py"
       syntax = "python"
-    else if path.extname(editor.getPath()) == ".yaml" or path.extname(editor.getPath()) == ".yml"
+    else if extname == ".yaml" or extname == ".yml"
       syntax = "yaml"
+    else if extname == ".css"
+      syntax = "css"
+    else if extname == ".html" or extname == ".htm"
+      syntax = "html"
     else
       syntax = "text"
     data =
@@ -39,12 +46,17 @@ module.exports = AtomDpaste =
 
   # Use HTTPS by default, else use HTTP
   get_transport: ->
+    if @get_config().use_https is true
+      return require 'https'
+    else
       return require 'http'
 
   # Check config to decide whether to copy the URL to the clipboard
   finalize: (config, url) ->
     if config.copy_paste_to_clipboard is true
       atom.clipboard.write(url)
+    if config.open_paste_in_browser is true
+      shell.openExternal url
 
   upload: ->
     config = @get_config()

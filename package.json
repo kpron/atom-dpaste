@@ -7,9 +7,6 @@
   "keywords": [
     "dpaste"
   ],
-  "activationCommands": {
-    "atom-workspace": "atom-dpaste:toggle"
-  },
   "repository": "https://github.com/kpron/atom-dpaste",
   "license": "MIT",
   "engines": {

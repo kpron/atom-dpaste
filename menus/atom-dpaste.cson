@@ -2,7 +2,7 @@
 'context-menu':
   'atom-text-editor': [
     {
-      'label': 'Upload to dpaste'
+      'label': 'Save as Paste'
       'command': 'atom-dpaste:upload'
     },
   ]
