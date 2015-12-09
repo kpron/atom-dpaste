@@ -13,3 +13,4 @@ describe 'Package Activation', ->
     expect(config.api_url).toBe "dpaste.de"
     expect(config.api_path).toBe "/api/"
     expect(config.use_https).toBe true
+    atom.notifications.addSuccess("Success: This is a notification")

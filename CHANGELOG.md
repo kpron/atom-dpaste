@@ -15,3 +15,7 @@
 * Added basic travis-ci integration
 * Some changes in README
 * Added simple specs for travis-ci
+## 0.1.4 - Notifications
+* Added notifications in atom editor gui
+* Added json, cson support
+* Set default syntax to "code" ("text" previously)

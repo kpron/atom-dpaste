@@ -21,7 +21,7 @@ module.exports = AtomDpaste =
     editor = atom.workspace.getActivePane().getActiveEditor()
     selection = editor.getLastSelection()
     extname = path.extname(editor.getPath())
-    if extname == ".coffee" or extname == ".js"
+    if extname == ".coffee" or extname == ".js" or extname == ".cson"
       syntax = "js"
     else if extname == ".pp"
       syntax = "puppet"
@@ -33,8 +33,10 @@ module.exports = AtomDpaste =
       syntax = "css"
     else if extname == ".html" or extname == ".htm"
       syntax = "html"
+    else if extname == ".json"
+      syntax = "json"
     else
-      syntax = "text"
+      syntax = "code"
     data =
       text: selection.getText()
       syntax: syntax
@@ -50,19 +52,22 @@ module.exports = AtomDpaste =
       return require 'https'
     else
       return require 'http'
-
   # Check config to decide whether to copy the URL to the clipboard
   finalize: (config, url) ->
     if config.copy_paste_to_clipboard is true
       atom.clipboard.write(url)
+      atom.notifications.addInfo("URL to the snippet was saved to clipboard.")
     if config.open_paste_in_browser is true
       shell.openExternal url
+      atom.notifications.addInfo("Opening snippet in default browser...")
 
   upload: ->
     config = @get_config()
     data = @get_editor_data()
     query = @build_query(config, data)
     @api_request(config, query)
+
+
   # Build the Dpaste API query string
   build_query: (config, data) ->
     query = "content=#{encodeURIComponent data.text}" +
@@ -89,6 +94,7 @@ module.exports = AtomDpaste =
           alert "ERROR: " + resp
         else
           @finalize(config, resp)
+          atom.notifications.addSuccess("Snippet was uploaded.\n" + resp)
     # Write the query to the Dpaste API
     req.write query
     req.end()
