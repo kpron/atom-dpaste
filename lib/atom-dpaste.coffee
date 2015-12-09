@@ -35,8 +35,10 @@ module.exports = AtomDpaste =
       syntax = "html"
     else if extname == ".json"
       syntax = "json"
+    else if extname == ".sh" or extname == ".bash"
+      syntax = "bash"
     else
-      syntax = "code"
+      syntax = "plain"
     data =
       text: selection.getText()
       syntax: syntax
